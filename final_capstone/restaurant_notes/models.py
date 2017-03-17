@@ -11,10 +11,21 @@ STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
 class RestaurantNote(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100, blank=True, default='')
-    note_text = models.TextField()
-    restaurant_id = models.CharField()
+    note_text = models.CharField(max_length=250, blank=True)
+    restaurant_id = models.CharField(blank=True, max_length=100)
     favorite_dish = models.CharField(default='favorite dish', max_length=100)
-    user = models.ForeignKey(User, related_name='customers', on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, related_name='customers', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('created',)
+
+class Customer(models.Model):
+	"""
+	Extends :model:`auth.User`
+	author: Mark Ellis
+	"""
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	address = models.CharField(max_length=240)
+	city = models.CharField(max_length=55)
+	state_province = models.CharField(max_length=55)
+	country = models.CharField(max_length=55)
