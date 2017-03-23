@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets, generics
+from django.http import JsonResponse
+from rest_framework import viewsets, generics, permissions, pagination
 from rest_framework.renderers import JSONRenderer
 from restaurant_notes.models import RestaurantNote, Customer
 from restaurant_notes.serializers import UserSerializer, GroupSerializer, RestaurantNoteSerializer,  CustomerSerializer, ClientSerializer
@@ -39,6 +40,9 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
+class RestaurantNotePagination(pagination.PageNumberPagination):
+    page_size = 80  # the no. of company objects you want to send in one go
+
 class RestaurantNoteViewSet(viewsets.ModelViewSet):
 	"""
     A ViewSet for viewing and editing restaurant note instances.
@@ -46,3 +50,12 @@ class RestaurantNoteViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = RestaurantNote.objects.all()
 	serializer_class = RestaurantNoteSerializer
+	pagination_class = RestaurantNotePagination
+
+def deleteNote(request, pk):
+	try:
+		note = RestaurantNote.objects.filter(pk=pk)
+		note.delete()
+	except:
+		return JsonResponse({"status": 'error'})
+	return JsonResponse({"status": 'success'})

@@ -9,10 +9,13 @@ class RestaurantNoteSerializer(serializers.HyperlinkedModelSerializer):
     to :model:`RestaurantNote`
     author: Mark Ellis
     """
+    print("3")
+    owner = serializers.ReadOnlyField(source='owner.username')
+    print(owner)
 
     class Meta:
         model = RestaurantNote
-        fields = ('url', 'created', 'title', 'note_text', 'restaurant_id', 'favorite_dish', )
+        fields = ('id', 'url', 'created', 'title', 'note_text', 'restaurant_id', 'favorite_dish', 'owner' )
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     """
