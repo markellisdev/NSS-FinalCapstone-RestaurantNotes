@@ -41,7 +41,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 class RestaurantNotePagination(pagination.PageNumberPagination):
-    page_size = 80  # the no. of company objects you want to send in one go
+    page_size = 80  # the no. of restaurant note objects you want to send in one go
 
 class RestaurantNoteViewSet(viewsets.ModelViewSet):
 	"""
